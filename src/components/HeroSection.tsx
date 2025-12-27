@@ -1,99 +1,60 @@
-import { Star, Phone } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { Menu, X, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 
-export default function HeroSection() {
-  const scrollRef = useRef<HTMLDivElement>(null);
+export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    let scrollAmount = 0;
-    const scroll = () => {
-      scrollAmount += 1;
-      if (scrollAmount >= scrollContainer.scrollWidth / 2) {
-        scrollAmount = 0;
-      }
-      scrollContainer.scrollLeft = scrollAmount;
-    };
-
-    const intervalId = setInterval(scroll, 30);
-    return () => clearInterval(intervalId);
-  }, []);
-
-  const beautyImages = [
-    'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'https://images.pexels.com/photos/3997379/pexels-photo-3997379.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'https://images.pexels.com/photos/3764540/pexels-photo-3764540.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'https://images.pexels.com/photos/3993449/pexels-photo-3993449.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'https://images.pexels.com/photos/3785147/pexels-photo-3785147.jpeg?auto=compress&cs=tinysrgb&w=600',
-    'https://images.pexels.com/photos/3865675/pexels-photo-3865675.jpeg?auto=compress&cs=tinysrgb&w=600',
-  ];
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsMenuOpen(false);
+    }
+  };
 
   return (
-    <section id="home" className="py-12 md:py-20 bg-gradient-to-br from-pink-50 via-rose-50 to-peach-50">
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-          <div className="space-y-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight">
-              Salon at Home for{' '}
-              <span className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
-                Women
-              </span>
-            </h1>
-
-            <div className="flex items-center space-x-2">
-              <div className="flex">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                ))}
-              </div>
-              <span className="text-gray-600 font-medium">4.9 out of 5 stars (2,500+ reviews)</span>
-            </div>
-
-            <p className="text-lg text-gray-600 leading-relaxed">
-              Experience professional beauty treatments in the comfort of your home. Our certified beauticians bring premium salon services right to your doorstep.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href="tel:+919811923486"
-                className="inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-8 py-3 rounded-full hover:shadow-xl transition-all duration-300 font-semibold"
-              >
-                <Phone className="w-5 h-5" />
-                <span>Call Now</span>
-              </a>
-              <button
-                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
-                className="inline-flex items-center justify-center space-x-2 border-2 border-pink-500 text-pink-500 px-8 py-3 rounded-full hover:bg-pink-50 transition-all duration-300 font-semibold"
-              >
-                <span>Explore Services</span>
-              </button>
-            </div>
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
+      <nav className="container mx-auto px-4 py-3 md:py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Sparkles className="w-5 h-5 md:w-6 md:h-6 text-pink-500" />
+            <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
+              Parlour at Home
+            </span>
           </div>
 
-          <div className="relative">
-            <div
-              ref={scrollRef}
-              className="flex overflow-x-hidden space-x-4"
-              style={{ scrollBehavior: 'auto' }}
+          <div className="hidden md:flex items-center space-x-8">
+            <button onClick={() => scrollToSection('home')} className="text-gray-700 hover:text-pink-500 transition-colors font-medium">Home</button>
+            <button onClick={() => scrollToSection('blogs')} className="text-gray-700 hover:text-pink-500 transition-colors font-medium">Blogs</button>
+            <button onClick={() => scrollToSection('services')} className="text-gray-700 hover:text-pink-500 transition-colors font-medium">Menu</button>
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
             >
-              {[...beautyImages, ...beautyImages].map((img, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-64 h-80 rounded-2xl overflow-hidden shadow-lg"
-                >
-                  <img
-                    src={img}
-                    alt="Beauty service"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
+              Book Now
+            </button>
           </div>
+
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-gray-700 p-1">
+            {isMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+          </button>
         </div>
-      </div>
-    </section>
+
+        {/* Mobile Menu Overlay */}
+        {isMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-100 p-6 space-y-5 shadow-2xl flex flex-col animate-in slide-in-from-top-2 duration-300">
+            <button onClick={() => scrollToSection('home')} className="text-left text-lg font-medium text-gray-700">Home</button>
+            <button onClick={() => scrollToSection('blogs')} className="text-left text-lg font-medium text-gray-700">Blogs</button>
+            <button onClick={() => scrollToSection('services')} className="text-left text-lg font-medium text-gray-700">Menu</button>
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl font-bold shadow-md"
+            >
+              Book Now
+            </button>
+          </div>
+        )}
+      </nav>
+    </header>
   );
 }
