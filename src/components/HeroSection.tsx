@@ -31,7 +31,7 @@ export default function HeroSection() {
           {/* Text Content Area */}
           <div className="space-y-4 md:space-y-6 text-center lg:text-left z-10">
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-800 leading-tight">
-              Salon at Home for{' '}
+              SAGARIKA & DORA at Home for{' '}
               <span className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">
                 Women
               </span>
